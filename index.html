@@ -146,7 +146,6 @@
         .chart-bar-track { background: #e2e8f0; border-radius: 6px; height: 14px; width: 100%; overflow: hidden; }
         .chart-bar-fill { background: var(--primary-accent); height: 100%; border-radius: 6px; transition: width 0.4s ease; }
 
-        /* تنسيق الشبكة التراكمية الشهرية التفاعلية */
         .matrix-table-container { overflow-x: auto; max-height: 420px; border: 1px solid var(--border-color); border-radius: 12px; margin-top: 10px; }
         .matrix-table { border-collapse: collapse; width: 100%; font-size: 0.75rem; text-align: center; }
         .matrix-table th, .matrix-table td { border: 1px solid #cbd5e1; padding: 6px 4px; white-space: nowrap; }
@@ -154,7 +153,6 @@
         .matrix-table td.item-name-cell { position: sticky; right: 0; background: #f8fafc; font-weight: bold; text-align: right; border-left: 2px solid #94a3b8; z-index: 1; }
         .matrix-table tr:hover td { outline: 1px solid #2563eb; }
         
-        /* درجات التظليل الحراري التفاعلي (Heatmap Classes) */
         .matrix-table td.heat-low { background-color: #dcfce7; color: #166534; font-weight: bold; }
         .matrix-table td.heat-mid { background-color: #86efac; color: #14532d; font-weight: bold; }
         .matrix-table td.heat-high { background-color: #22c55e; color: #ffffff; font-weight: bold; text-shadow: 0 1px 2px rgba(0,0,0,0.3); }
@@ -200,7 +198,6 @@
             <button class="desktop-nav-btn" onclick="switchTab('view-add-item', this)">➕ إضافة مادة</button>
         </div>
 
-        <!-- تبويب لوحة المؤشرات الاستراتيجية (Dashboard) -->
         <section id="view-dashboard" class="view-section">
             <div class="stats-grid">
                 <div class="stat-card" onclick="goToInventory('all')">
@@ -217,7 +214,6 @@
                 </div>
             </div>
 
-            <!-- بطاقة المصفوفة التراكمية الشهرية -->
             <div class="card" id="monthly-matrix-card" style="border: 2px solid #059669; background: #ecfdf5;">
                 <div class="card-title" style="margin-bottom: 8px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
                     <span style="color:#065f46;">📅 المصفوفة التراكمية الشهرية لسحب الأصناف (Monthly Matrix Grid)</span>
@@ -229,7 +225,6 @@
                     </div>
                 </div>
 
-                <!-- شريط الإحصائيات الفورية -->
                 <div style="display:grid; grid-template-columns: repeat(3, 1fr); gap:8px; background:#fff; padding:8px 12px; border-radius:10px; border:1px solid #a7f3d0; margin-bottom:10px; text-align:center; font-size:0.8rem;">
                     <div><span style="color:#047857;">إجمالي كراتين الشهر:</span> <b id="matrix-stat-total" style="color:#065f46;">0</b></div>
                     <div><span style="color:#047857;">الأكثر سحباً (Top Seller):</span> <b id="matrix-stat-top" style="color:#2563eb;">-</b></div>
@@ -244,7 +239,6 @@
                 </div>
             </div>
 
-            <!-- تقرير توزيع الصنف المخصص على الزبائن -->
             <div class="card" style="border: 2px solid #7c3aed; background: #faf5ff;">
                 <div class="card-title" style="margin-bottom: 8px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
                     <span style="color:#6d28d9;">👥📦 تقرير سحب الزبائن حسب الصنف المخصص (Cross-Customer Distribution)</span>
@@ -260,7 +254,6 @@
                 </div>
             </div>
 
-            <!-- أداة مقارنة الفترات المخصصة جنباً إلى جنب -->
             <div class="card" id="side-by-side-comparison-card" style="border: 2px solid #2563eb; background: #f0f6ff;">
                 <div class="card-title" style="margin-bottom: 10px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
                     <span style="color:#1d4ed8;">⚖️ أداة مقارنة الفترات المخصصة جنباً إلى جنب</span>
@@ -292,7 +285,6 @@
                 </div>
             </div>
 
-            <!-- مساعد التنبؤ الذكي بطلبيات المعمل -->
             <div class="card" style="border: 2px solid #2563eb; background: #eff6ff;">
                 <div class="card-title" style="margin-bottom: 8px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
                     <span style="color:#1d4ed8;">🤖 مساعد التنبؤ الذكي بطلبيات المعمل (AI Advisor)</span>
@@ -306,7 +298,6 @@
                 </div>
             </div>
 
-            <!-- رادار فترات الركود والنشاط الأسبوعي -->
             <div class="card" style="border: 2px solid #0891b2; background: #ecfeff;">
                 <div class="card-title" style="margin-bottom: 8px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
                     <span style="color:#0e7490;">⏱️ رادار فترات الركود والنشاط الأسبوعي (Weekly Momentum)</span>
@@ -320,7 +311,6 @@
                 </div>
             </div>
 
-            <!-- بوصلة المقارنة الموسمية الزمنية -->
             <div class="card" style="border: 2px solid #7c3aed; background: #faf5ff;">
                 <div class="card-title" style="margin-bottom: 8px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
                     <span style="color:#6d28d9;">🧭 بوصلة المقارنة الموسمية (YoY Pulse Match)</span>
@@ -470,7 +460,6 @@
             </div>
         </section>
 
-        <!-- تبويب الحركة والفواتير (مضاف إليه الإدخال الصوتي الذكي) -->
         <section id="view-movement" class="view-section active">
             <div class="card">
                 <div class="card-title" style="margin-bottom: 16px; display:flex; justify-content:space-between; align-items:center;">
@@ -478,14 +467,13 @@
                     <span id="editing-status-banner" style="font-size:0.75rem; background:#fef3c7; color:#b45309; padding:4px 10px; border-radius:6px; display:none; border:1px solid #fcd34d; font-weight:bold;">وضع التعديل النشط ✏️</span>
                 </div>
                 
-                <!-- زر الإدخال الصوتي الذكي الجديد (M6) -->
                 <div style="background: #f3e8ff; border: 1px solid #d8b4fe; padding: 12px; border-radius: 12px; margin-bottom: 16px;">
                     <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
                         <button type="button" onclick="startVoiceRecognition()" style="flex: 1; background: #7c3aed; color: #fff; border: none; padding: 12px; border-radius: 10px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 0.9rem;">
                             🎙️ إدخال صوتي ذكي (تحدث الآن)
                         </button>
                     </div>
-                    <div id="voice-status-text" style="font-size: 0.78rem; color: #6b21a8; text-align: center; margin-top: 6px; font-weight: bold;">اضغط وتحدث بوضوح (مثال: "إخراج إلى زبون المحبة خمسين كرتونة كاسات")</div>
+                    <div id="voice-status-text" style="font-size: 0.78rem; color: #6b21a8; text-align: center; margin-top: 6px; font-weight: bold;">اضغط وتحدث بوضوح (مثال: "إخراج زبون المحبة خمسين كرتونة")</div>
                 </div>
 
                 <div id="movement-form">
@@ -510,7 +498,6 @@
                         <input type="text" id="move-note" class="form-control" list="customers-datalist" placeholder="اختر أو اكتب اسم الزبون..." oninput="checkCustomerQuickList(this.value)" autocomplete="off">
                     </div>
 
-                    <!-- لوحة المواد الشائعة المثبتة -->
                     <div class="card" style="border: 1px solid #cbd5e1; background: #f8fafc; margin-bottom: 14px; padding: 12px;">
                         <div style="font-weight:bold; font-size:0.82rem; color:#334155; margin-bottom:8px; display:flex; justify-content:space-between; align-items:center;">
                             <span>📌 المواد الشائعة المثبتة (الأكثر طلباً - نقرة للإضافة)</span>
@@ -521,7 +508,6 @@
                         </div>
                     </div>
 
-                    <!-- لوحة الطلبيات السريعة للزبون -->
                     <div id="quick-customer-items-card" class="card" style="display:none; border: 2px dashed #2563eb; background: #f0fdf4; margin-bottom: 16px; padding: 14px;">
                         <div style="font-weight:bold; font-size:0.85rem; color:#166534; margin-bottom:8px; display:flex; justify-content:space-between; align-items:center;">
                             <span>⚡ قائمة أصناف الزبون المفضلة والمتكررة</span>
@@ -565,7 +551,6 @@
             </div>
         </section>
 
-        <!-- تبويب توريد المعمل المباشر -->
         <section id="view-factory-direct" class="view-section">
             <div class="card" style="border: 2px solid var(--factory); background: #faf5ff;">
                 <div class="card-header" style="margin-bottom: 10px;">
@@ -600,7 +585,6 @@
             </div>
         </section>
 
-        <!-- تبويب الجرد والأصناف -->
         <section id="view-items" class="view-section">
             <div class="filter-tabs">
                 <button class="filter-btn active" id="filter-all" onclick="setInventoryFilter('all')">الكل</button>
@@ -630,7 +614,6 @@
             </div>
         </section>
 
-        <!-- تبويب دليل الزبائن -->
         <section id="view-customers" class="view-section">
             <div class="card" style="border: 2px solid #2563eb; background: #f8fafc;">
                 <div class="card-header" style="margin-bottom: 10px;">
@@ -671,7 +654,6 @@
             </div>
         </section>
 
-        <!-- تبويب طلبات المعمل ومحاكي سعة الشحن -->
         <section id="view-orders" class="view-section">
             <div class="card">
                 <div class="card-header" style="flex-wrap: wrap; gap: 8px;">
@@ -710,7 +692,6 @@
             </div>
         </section>
 
-        <!-- تبويب إضافة مادة -->
         <section id="view-add-item" class="view-section">
             <div class="card">
                 <div class="card-title" style="margin-bottom: 16px;">➕ تعريف مادة جديدة</div>
@@ -739,7 +720,6 @@
         </section>
     </div>
 
-    <!-- النوافذ المنبثقة النظامية -->
     <div id="reconciliation-modal" class="modal">
         <div class="modal-content" style="max-width: 700px;">
             <div class="modal-header">
@@ -1133,7 +1113,7 @@
             renderMonthlyItemMatrix();
         });
 
-        // 🎙️ ميزة الإدخال الصوتي الذكي (M6)
+        // 🎙️ دالة الإدخال الصوتي الذكي المحسنة
         function startVoiceRecognition() {
             const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
             if (!SpeechRecognition) {
@@ -1147,7 +1127,7 @@
             recognition.maxAlternatives = 1;
 
             const statusEl = document.getElementById('voice-status-text');
-            statusEl.textContent = '🎙️ جاري الاستماع... تحدث بوضوح الآن (مثال: "إخراج زبون المحبة خمسين كرتونة")';
+            statusEl.textContent = '🎙️ جاري الاستماع... تحدث بوضوح الآن';
             statusEl.style.color = '#7c3aed';
 
             recognition.onresult = function(event) {
@@ -1171,6 +1151,7 @@
         function parseVoiceCommand(text) {
             text = text.toLowerCase();
             
+            // 1. تحديد نوع الحركة
             if (text.includes('إدخال') || text.includes('وارد')) {
                 document.getElementById('type-in').checked = true;
                 toggleFormMode();
@@ -1182,26 +1163,40 @@
                 toggleFormMode();
             }
 
+            // 2. مطابقة الأصناف بذكاء (الاسم أو الرقم مثل 502)
+            const numbers = text.match(/\d+/g);
             items.forEach(item => {
-                if (text.includes(item.name.toLowerCase())) {
-                    const regex = new RegExp(`(\\d+)\\s*(كرتونة|كراتين)?\\s*(${item.name.toLowerCase()})`, 'i');
-                    const match = text.match(regex);
-                    if (match && match[1]) {
-                        const qty = parseInt(match[1]);
-                        addQuickItemToInvoiceWithQty(item.name, qty);
-                    }
+                const itemNameLower = item.name.toLowerCase();
+                let isMatched = text.includes(itemNameLower);
+                if (!isMatched && numbers) {
+                    numbers.forEach(num => {
+                        if (num.length >= 3 && itemNameLower.includes(num)) {
+                            isMatched = true;
+                        }
+                    });
+                }
+
+                if (isMatched) {
+                    const qtyMatch = text.match(/(\d+)\s*(كرتونة|كراتين|علبة|علبه)?/i);
+                    const qty = qtyMatch ? parseInt(qtyMatch[1]) : 1;
+                    addQuickItemToInvoiceWithQty(item.name, qty);
                 }
             });
 
-            if (text.includes('زبون') || text.includes('إلى')) {
-                let parts = text.split(/زبون|إلى/);
-                if (parts.length > 1) {
-                    let customerName = parts[1].trim().split(' ')[0];
-                    const noteInput = document.getElementById('move-note');
-                    if (noteInput) {
-                        noteInput.value = customerName;
-                        checkCustomerQuickList(customerName);
-                    }
+            // 3. استخراج اسم الزبون كاملاً
+            let customerPart = '';
+            if (text.includes('زبون')) {
+                customerPart = text.split('زبون')[1];
+            } else if (text.includes('إلى') || text.includes('الي')) {
+                customerPart = text.split(/إلى|الي/)[1];
+            }
+
+            if (customerPart) {
+                let cleanCustomerName = customerPart.split(/(\d+|كرتونة|كراتين|علبة|علبه)/)[0].trim();
+                const noteInput = document.getElementById('move-note');
+                if (noteInput && cleanCustomerName) {
+                    noteInput.value = cleanCustomerName;
+                    checkCustomerQuickList(cleanCustomerName);
                 }
             }
         }

@@ -4434,7 +4434,7 @@ async function callGeminiApi(question, data) {
     const prompt = `أنت مساعد ذكي لمستودع كراتين وتغليف (Kanawati Pack). ملخص البيانات:\n${JSON.stringify(data)}\n\nسؤال المستخدم حسين: ${question}`;
     
     // إرسال الطلب عبر proxy لتجاوز الحظر المحلي (blocked / CORS)
-    const targetUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`;
+    const targetUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${AIzaSyDnj_ebu8vu0bFYtYvt0yPRFpVAItgPSL0}`;
     const proxyUrl = `https://corsproxy.io/?` + encodeURIComponent(targetUrl);
     
     const res = await fetch(proxyUrl, {

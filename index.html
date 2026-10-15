@@ -115,10 +115,8 @@
         .invoice-item-row { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px dashed #f1f5f9; }
 
         .actions-group { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
-        .item-row { display: flex; gap: 10px; margin-bottom: 10px; align-items: center; }
-        .item-row .item-input { flex: 2; }
-        .item-row .qty-input { flex: 1; }
-        .item-row .remove-btn { background: #fee2e2; color: #dc2626; border: 1px solid #fca5a5; border-radius: 10px; padding: 12px; cursor: pointer; font-weight: bold; }
+        .item-row { display: flex; gap: 10px; margin-bottom: 14px; align-items: flex-start; flex-wrap: wrap; }
+        .item-row .remove-btn { background: #fee2e2; color: #dc2626; border: 1px solid #fca5a5; border-radius: 10px; padding: 12px; cursor: pointer; font-weight: bold; height: 44px; }
 
         .filter-tabs { display: flex; gap: 8px; margin-bottom: 14px; }
         .filter-btn { flex: 1; padding: 10px; border: 1px solid var(--border-color); background: #fff; border-radius: 10px; font-size: 0.85rem; font-weight: 700; cursor: pointer; color: var(--text-muted); transition: all 0.2s; }
@@ -153,6 +151,108 @@
         .matrix-table td.heat-high { background-color: #22c55e; color: #ffffff; font-weight: bold; text-shadow: 0 1px 2px rgba(0,0,0,0.3); }
         
         .matrix-footer-row td { position: sticky; bottom: 0; background: #0f172a !important; color: #f8fafc; z-index: 3; font-weight: bold; border-top: 2px solid #3b82f6; }
+        /* تنسيقات المساعد الذكي */
+.ai-chat-toggle {
+    position: fixed;
+    bottom: 80px;
+    left: 20px;
+    background-color: #6d28d9;
+    color: white;
+    border: none;
+    border-radius: 50px;
+    padding: 12px 24px;
+    font-weight: bold;
+    font-size: 0.9rem;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    z-index: 9998;
+}
+.ai-chat-window {
+    position: fixed;
+    bottom: 140px;
+    left: 20px;
+    width: 350px;
+    height: 450px;
+    max-width: 90vw;
+    background-color: white;
+    border-radius: 12px;
+    border: 1px solid #ccc;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    z-index: 9999;
+}
+.ai-chat-header {
+    background: #6d28d9;
+    color: white;
+    padding: 12px 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.ai-chat-close {
+    background: rgba(255,255,255,0.2);
+    border: none;
+    color: white;
+    font-size: 1.1rem;
+    cursor: pointer;
+    border-radius: 50%;
+    width: 28px;
+    height: 28px;
+}
+.ai-chat-messages {
+    flex: 1;
+    padding: 16px;
+    overflow-y: auto;
+    background-color: #f8fafc;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+.ai-message {
+    padding: 10px 14px;
+    border-radius: 12px;
+    font-size: 0.85rem;
+    max-width: 85%;
+    line-height: 1.5;
+}
+.ai-message.assistant {
+    background-color: white;
+    color: #333;
+    align-self: flex-start;
+    border: 1px solid #e2e8f0;
+}
+.ai-message.user {
+    background-color: #2563eb;
+    color: white;
+    align-self: flex-end;
+}
+.ai-chat-input-container {
+    padding: 10px 16px;
+    background-color: white;
+    border-top: 1px solid #e2e8f0;
+    display: flex;
+    gap: 8px;
+}
+.ai-chat-input {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #cbd5e1;
+    border-radius: 10px;
+    font-size: 0.85rem;
+    outline: none;
+}
+.ai-chat-send {
+    background-color: #6d28d9;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 0 16px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
     </style>
 </head>
 <body>
@@ -206,6 +306,78 @@
                 <div class="stat-card" onclick="goToInventory('low')">
                     <div style="font-size:0.75rem; color:var(--text-muted); font-weight:700;">مواد منخفضة (موسمي)</div>
                     <div class="num" id="dash-low-stock" style="color:var(--warning);">0</div>
+                </div>
+            </div>
+
+            <!-- جدول المواد المنخفضة وحالة طلبها (تم تحديثه ليعرض الكل) -->
+            <div class="card" style="border: 2px solid var(--warning); background: #fffbeb;">
+                <div class="card-title" style="margin-bottom: 8px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
+                    <span style="color:#b45309;">⚠️ جدول تفصيلي للمواد المنخفضة وحالة طلبها الفعلي من المعمل</span>
+                    <button class="btn-invoice-img" onclick="goToInventory('low')" style="background:var(--warning); font-size:0.78rem; padding:6px 12px;">إدارة النواقص بالكامل 📦</button>
+                </div>
+                <div style="font-size:0.82rem; color:#92400e; margin-bottom:10px;">
+                    المواد بالأحمر <span style="background:#fee2e2; color:#dc2626; padding:2px 6px; border-radius:4px; font-weight:bold;">غير مطلوبة بعد</span> | المواد بالأصفر <span style="background:#fef3c7; color:#b45309; padding:2px 6px; border-radius:4px; font-weight:bold;">تم طلبها وفي انتظار الاستلام ⏳</span>
+                </div>
+                <div style="max-height: 320px; overflow-y: auto; background: #fff; border: 1px solid #fcd34d; border-radius: 10px;">
+                    <table style="width: 100%; border-collapse: collapse; text-align: right; font-size: 0.85rem;">
+                        <thead>
+                            <tr style="background: #fef3c7; color: #b45309;">
+                                <th style="padding: 10px 12px;">#</th>
+                                <th style="padding: 10px 12px;">اسم الصنف</th>
+                                <th style="padding: 10px 12px; text-align: center;">الرصيد الحالي</th>
+                                <th style="padding: 10px 12px; text-align: center;">الحد الأدنى الموسمي</th>
+                                <th style="padding: 10px 12px; text-align: center;">حالة الطلب 🚚</th>
+                                <th style="padding: 10px 12px; text-align: center;">الإجراء</th>
+                            </tr>
+                        </thead>
+                        <tbody id="dash-low-stock-table-body">
+                            <tr><td colspan="6" style="text-align:center; padding:15px; color:var(--text-muted);">لا توجد مواد منخفضة حالياً</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- لوحة البحث والمقارنة المزدوجة -->
+            <div class="card" style="border: 2px solid #7c3aed; background: #faf5ff;">
+                <div class="card-title" style="margin-bottom: 8px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
+                    <span style="color:#6d28d9;">🔍⚖️ لوحة تتبع مبيعات الزبون (المعمل المباشر مقابل المستودع)</span>
+                    <button class="btn-invoice-img" onclick="downloadAsImage(this.closest('.card'), 'تقرير_مقارنة_المعمل_والمستودع.png')">تصدير كصورة 📥</button>
+                </div>
+                <div style="font-size:0.82rem; color:#5b21b6; margin-bottom:12px;">
+                    أدخل اسم الزبون والصنف وحدد الفترة الزمنية لمعرفة الكميات المأخوذة من المعمل مقابل المستودع بدقة:
+                </div>
+
+                <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap:10px; margin-bottom:12px; background:#fff; padding:12px; border-radius:12px; border:1px solid #d8b4fe;">
+                    <div>
+                        <label style="font-size:0.75rem; font-weight:bold; color:var(--text-muted); margin-bottom:4px;">اسم الزبون:</label>
+                        <input type="text" id="dual-search-cust" class="form-control" list="customers-datalist" placeholder="اختر الزبون..." oninput="runDualCustomerComparison()" style="background:#f8fafc; font-size:0.82rem;" autocomplete="off">
+                    </div>
+                    <div>
+                        <label style="font-size:0.75rem; font-weight:bold; color:var(--text-muted); margin-bottom:4px;">الصنف:</label>
+                        <input type="text" id="dual-search-item" class="form-control" list="items-datalist" placeholder="اختر الصنف..." oninput="runDualCustomerComparison()" style="background:#f8fafc; font-size:0.82rem;" autocomplete="off">
+                    </div>
+                    <div>
+                        <label style="font-size:0.75rem; font-weight:bold; color:var(--text-muted); margin-bottom:4px;">من تاريخ:</label>
+                        <input type="date" id="dual-date-from" class="form-control" style="background:#f8fafc; font-size:0.78rem;" onchange="runDualCustomerComparison()">
+                    </div>
+                    <div>
+                        <label style="font-size:0.75rem; font-weight:bold; color:var(--text-muted); margin-bottom:4px;">إلى تاريخ:</label>
+                        <input type="date" id="dual-date-to" class="form-control" style="background:#f8fafc; font-size:0.78rem;" onchange="runDualCustomerComparison()">
+                    </div>
+                </div>
+
+                <div style="display:grid; grid-template-columns: repeat(2, 1fr); gap:12px; text-align:center;">
+                    <div style="background:#fff; padding:14px; border-radius:10px; border:1px solid #c084fc;">
+                        <div style="font-size:0.75rem; color:#6d28d9; font-weight:bold;">🏭 كمية المعمل المباشر</div>
+                        <div id="dual-factory-result" style="font-size:1.4rem; font-weight:900; color:#7c3aed; margin-top:4px;">0 كرتونة</div>
+                    </div>
+                    <div style="background:#fff; padding:14px; border-radius:10px; border:1px solid #6ee7b7;">
+                        <div style="font-size:0.75rem; color:#065f46; font-weight:bold;">📦 كمية المستودع</div>
+                        <div id="dual-warehouse-result" style="font-size:1.4rem; font-weight:900; color:#059669; margin-top:4px;">0 كرتونة</div>
+                    </div>
+                </div>
+                <div id="dual-total-summary-text" style="text-align:center; margin-top:10px; font-size:0.82rem; color:#475569; font-weight:bold;">
+                    الإجمالي الكلي المسحوب: 0 كرتونة
                 </div>
             </div>
 
@@ -282,11 +454,11 @@
 
             <div class="card" style="border: 2px solid #2563eb; background: #eff6ff;">
                 <div class="card-title" style="margin-bottom: 8px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
-                    <span style="color:#1d4ed8;">🤖 مساعد التنبؤ الذكي بطلبيات المعمل (AI Advisor)</span>
-                    <span style="background:#2563eb; color:#fff; font-size:0.7rem; padding:4px 10px; border-radius:6px; font-weight:700;">تحليل وتوصيات استباقية</span>
+                    <span style="color:#1d4ed8;">🤖 مساعد التنبؤ الذكي بطلبيات المعمل (النافذة المزدوجة)</span>
+                    <span style="background:#2563eb; color:#fff; font-size:0.7rem; padding:4px 10px; border-radius:6px; font-weight:700;">موجات الطلب والتنبؤ الاستباقي</span>
                 </div>
                 <div style="font-size:0.85rem; color:#1e40af; margin-bottom:12px;">
-                    يحلل الذكاء الاصطناعي سرعة سحب كل صنف ومقارنتها بالعام الماضي ليقترح عليك كميات الشراء بدقة:
+                    يقارن الذكاء الاصطناعي سرعة السحب قصيرة المدى (14 يوماً) مع متوسط المدى (90 يوماً) لاكتشاف موجات الطلب الفجائية واقتراح الطلبيات بدقة:
                 </div>
                 <div id="ai-smart-advisor-container" style="background: #fff; border: 1px solid #bfdbfe; border-radius: 12px; padding: 14px; font-size: 0.88rem;">
                     <div style="color:var(--text-muted); text-align:center;">جاري تحليل السحب وإعداد توصيات الذكاء الاصطناعي...</div>
@@ -465,11 +637,11 @@
                 <div id="movement-form">
                     <div class="type-toggle" style="flex-wrap: wrap;">
                         <input type="radio" id="type-in" name="movement_type" value="IN" onchange="toggleFormMode()">
-                        <label for="type-in">📥 إدخال (وارد المعمل)</label>
+                        <label for="type-in">📥 إدخال</label>
                         <input type="radio" id="type-return" name="movement_type" value="RETURN" onchange="toggleFormMode()">
                         <label for="type-return">🔄 مرتجع</label>
                         <input type="radio" id="type-out" name="movement_type" value="OUT" checked onchange="toggleFormMode()">
-                        <label for="type-out">📤 إخراج (للزبون)</label>
+                        <label for="type-out">📤 إخراج</label>
                         <input type="radio" id="type-factory-direct" name="movement_type" value="FACTORY_DIRECT" onchange="toggleFormMode()">
                         <label for="type-factory-direct">🏭 توريد مباشر من المعمل</label>
                     </div>
@@ -484,19 +656,6 @@
                         <input type="text" id="move-note" class="form-control" list="customers-datalist" placeholder="اختر أو اكتب اسم الزبون..." oninput="checkCustomerQuickList(this.value)" autocomplete="off">
                     </div>
 
-                    <!-- محرك الذكاء في الإدخال: لصق البيانات السريع دفعة واحدة -->
-                    <div class="card" style="border: 2px dashed #2563eb; background: #f0f6ff; margin-bottom: 14px; padding: 12px;">
-                        <div style="font-weight:bold; font-size:0.85rem; color:#1d4ed8; margin-bottom:6px; display:flex; justify-content:space-between; align-items:center;">
-                            <span>⚡ محرك الذكاء: لصق فاتورة أو قائمة صلع سريعة</span>
-                            <span style="font-size:0.7rem; background:#dbeafe; color:#1e40af; padding:2px 8px; border-radius:6px;">تعبئة تلقائية</span>
-                        </div>
-                        <div style="font-size:0.78rem; color:#475569; margin-bottom:8px;">الصق النص هنا (مثال: علبة 502 عدد 50، أو الصنف والعدد بأي تنسيق) ليقوم النظام بتعبئتها فوراً:</div>
-                        <div style="display:flex; gap:8px;">
-                            <textarea id="smart-paste-textarea" class="form-control" rows="2" placeholder="الصق النص هنا..." style="font-size:0.8rem; background:#fff;"></textarea>
-                            <button type="button" class="btn btn-primary" onclick="processSmartPaste()" style="width:auto; padding:0 16px; font-size:0.82rem;">تحليل ولصق 🚀</button>
-                        </div>
-                    </div>
-
                     <div class="card" style="border: 1px solid #cbd5e1; background: #f8fafc; margin-bottom: 14px; padding: 12px;">
                         <div style="font-weight:bold; font-size:0.82rem; color:#334155; margin-bottom:8px; display:flex; justify-content:space-between; align-items:center;">
                             <span>📌 المواد الشائعة المثبتة (الأكثر طلباً - نقرة للإضافة)</span>
@@ -509,7 +668,7 @@
 
                     <div id="quick-customer-items-card" class="card" style="display:none; border: 2px dashed #2563eb; background: #f0fdf4; margin-bottom: 16px; padding: 14px;">
                         <div style="font-weight:bold; font-size:0.85rem; color:#166534; margin-bottom:8px; display:flex; justify-content:space-between; align-items:center;">
-                            <span>⚡ قائمة أصناف الزبون المفضلة والمتكررة</span>
+                            <span>⚡ قائمة أصناف الزبون المفضلة ومتكررة الحركة</span>
                             <span style="font-size:0.7rem; background:#dcfce7; color:#15803d; padding:2px 8px; border-radius:6px;">نقرة لإضافة الصنف فوراً</span>
                         </div>
                         <div id="quick-customer-items-list" style="display:flex; flex-wrap:wrap; gap:6px;"></div>
@@ -603,13 +762,18 @@
                             <th style="width: 5%;">#</th>
                             <th style="width: 20%;">اسم الصنف والحركة</th>
                             <th style="width: 15%; text-align: center;">الكمية (كراتين)</th>
+                            <th style="width: 15%; text-align: center;">التصنيف الاستراتيجي 🏷️</th>
                             <th style="width: 15%; text-align: center;">المدة المتوقعة للنفاد ⏳</th>
-                            <th style="width: 20%; text-align: center;">نقطة الطلب الموسميّة</th>
-                            <th style="width: 25%; text-align: center;">الإجراءات</th>
+                            <th style="width: 15%; text-align: center;">نقطة الطلب الموسميّة</th>
+                            <th style="width: 15%; text-align: center;">الإجراءات</th>
                         </tr>
                     </thead>
                     <tbody id="items-table-body"></tbody>
                 </table>
+            </div>
+            
+            <div id="inventory-load-more-box" style="text-align: center; margin-top: 15px; display: none;">
+                <button onclick="loadMoreInventoryItems()" class="btn" style="background: #e2e8f0; color: var(--primary); font-weight: bold; width: auto; padding: 10px 24px;">👇 عرض المزيد من الأصناف</button>
             </div>
         </section>
 
@@ -658,7 +822,6 @@
                 <div class="card-header" style="flex-wrap: wrap; gap: 8px;">
                     <div class="card-title">📋 طلبات المستودع (المعمل)</div>
                     <div style="display:flex; gap:6px; flex-wrap: wrap;">
-                        <button class="btn-primary" onclick="addAllLowStockToOrders()" style="background:var(--warning); color:#fff; width:auto; padding:8px 12px; font-size:0.78rem;" title="إضافة كل المواد الناقصة موسميّاً بضغطة زر">⚡ إضافة النواقص تلقائياً</button>
                         <button class="btn-primary" onclick="openManualOrderModal()" style="width:auto; padding:8px 12px; font-size:0.78rem;">➕ إضافة طلب يدوي</button>
                         <button class="btn-preview" onclick="previewPDF()">معاينة 👁</button>
                         <button class="btn-pdf" onclick="exportOrdersToPDF()">تصدير PDF 📄</button>
@@ -719,18 +882,7 @@
         </section>
     </div>
 
-    <!-- نافذة تنبيه الفارق اللحظي (للوارد والإخراج) -->
-    <div id="live-diff-modal" class="modal">
-        <div class="modal-content" style="max-width: 450px; text-align: center;">
-            <div class="modal-header">
-                <h3 id="live-diff-title" style="color:var(--primary);">📊 تدقيق حركة الرصيد اللحظي</h3>
-                <button class="modal-close" onclick="closeLiveDiffModal()">✕</button>
-            </div>
-            <div id="live-diff-body" style="padding: 10px; font-size: 0.95rem; line-height: 1.6; margin-bottom: 16px;"></div>
-            <button class="btn btn-primary" onclick="confirmAndExecuteSaveMovement()">اعتماد وحفظ الحركة ✅</button>
-        </div>
-    </div>
-
+    <!-- Modals -->
     <div id="reconciliation-modal" class="modal">
         <div class="modal-content" style="max-width: 700px;">
             <div class="modal-header">
@@ -1055,7 +1207,6 @@
             }
         });
     </script>
-
     <script>
         let items = [];
         let invoices = [];
@@ -1069,7 +1220,8 @@
         let historyCanvasContainer = null;
         let editingInvoiceId = null; 
         let matrixDisplayMode = 'cartons';
-        let pendingMovementData = null;
+        let inventoryDisplayLimit = 10;
+        let aiAdvisorDisplayLimit = 10;
         
         window.hasUnsavedChanges = false;
 
@@ -1123,49 +1275,49 @@
             renderPinnedCommonItems();
             runSideBySideComparison();
             renderMonthlyItemMatrix();
+            runDualCustomerComparison();
         });
 
-        // محرك الذكاء: لصق وتحليل النصوص السريعة
-        function processSmartPaste() {
-            const textarea = document.getElementById('smart-paste-textarea');
-            const rawText = textarea.value.trim();
-            if (!rawText) {
-                alert('⚠ يرجى لصق النص أو الفاتورة أولاً!');
-                return;
-            }
+        function runDualCustomerComparison() {
+            const custVal = document.getElementById('dual-search-cust').value.toLowerCase().trim();
+            const itemVal = document.getElementById('dual-search-item').value.toLowerCase().trim();
+            const dateFrom = document.getElementById('dual-date-from').value;
+            const dateTo = document.getElementById('dual-date-to').value;
 
-            const lines = rawText.split(/\r?\n/);
-            let addedCount = 0;
+            let factoryQty = 0;
+            let warehouseQty = 0;
 
-            lines.forEach(line => {
-                const cleaned = line.trim();
-                if (!cleaned) return;
-
-                // محاولة استخراج الأرقام (العدد) واسم الصنف
-                // نبحث عن أرقام في السطر
-                const match = cleaned.match(/(?:عدد|كمية|=)?\s*(\d+(?:\.\d+)?)\b/);
-                if (match) {
-                    const qtyVal = match[1];
-                    // اسم الصنف هو ما تبقى من السطر بعد استبعاد الرقم
-                    let itemName = cleaned.replace(match[0], '').replace(/[-:]/g, '').trim();
-                    
-                    if (itemName) {
-                        // مطابقة تقريبية مع أسماء الأصناف الموجودة في النظام
-                        const matchedItem = items.find(i => i.name.toLowerCase().includes(itemName.toLowerCase()) || itemName.toLowerCase().includes(i.name.toLowerCase()));
-                        const finalName = matchedItem ? matchedItem.name : itemName;
-
-                        addItemRow(false, finalName, qtyVal);
-                        addedCount++;
-                    }
+            invoices.forEach(inv => {
+                if (inv.isoDate) {
+                    if (dateFrom && inv.isoDate < dateFrom) return;
+                    if (dateTo && inv.isoDate > dateTo) return;
                 }
+
+                const isFactoryDirect = inv.type === 'FACTORY_DIRECT';
+                const isWarehouseOut = inv.type === 'OUT';
+
+                if (!isFactoryDirect && !isWarehouseOut) return;
+
+                if (custVal) {
+                    if (!inv.note || !inv.note.toLowerCase().includes(custVal)) return;
+                }
+
+                inv.items.forEach(it => {
+                    if (itemVal && !it.name.toLowerCase().includes(itemVal)) return;
+                    
+                    const qVal = parseFloat(it.qtyVal !== undefined ? it.qtyVal : (String(it.qty).replace(/[^\d.]/g, ''))) || 0;
+
+                    if (isFactoryDirect) {
+                        factoryQty += qVal;
+                    } else if (isWarehouseOut) {
+                        warehouseQty += qVal;
+                    }
+                });
             });
 
-            if (addedCount > 0) {
-                textarea.value = '';
-                alert(`✅ تم تحليل ولصق (${addedCount}) أصناف بنجاح في الفاتورة!`);
-            } else {
-                alert('❌ تعذر استخراج أصناف وأعداد بوضوح من النص، تأكد من وجود أرقام مع أسماء المواد.');
-            }
+            document.getElementById('dual-factory-result').textContent = `${factoryQty} كرتونة`;
+            document.getElementById('dual-warehouse-result').textContent = `${warehouseQty} كرتونة`;
+            document.getElementById('dual-total-summary-text').textContent = `الإجمالي الكلي المسحوب (المعمل + المستودع): ${factoryQty + warehouseQty} كرتونة`;
         }
 
         function toggleMatrixDisplayMode() {
@@ -1233,9 +1385,20 @@
             const statTopEl = document.getElementById('matrix-stat-top');
             const statAvgEl = document.getElementById('matrix-stat-avg');
 
-            if (statTotalEl) statTotalEl.textContent = `${grandTotalCartonsMonth} كرتونة`;
-            if (statTopEl) statTopEl.textContent = topSellerVal > 0 ? `${topSellerName} (${topSellerVal})` : '-';
-            if (statAvgEl) statAvgEl.textContent = `${Math.round(grandTotalCartonsMonth / daysInMonth)} كرتونة/يوم`;
+          if (statTotalEl) statTotalEl.textContent = `${grandTotalCartonsMonth} كرتونة`;
+if (statTopEl) statTopEl.textContent = topSellerVal > 0 ? `${topSellerName} (${topSellerVal})` : '-';
+
+const today = new Date();
+const currentYearMonth = today.toISOString().slice(0, 7);
+let divisorDays = daysInMonth;
+
+if (selectedMonthStr === currentYearMonth) {
+    divisorDays = today.getDate();
+}
+
+if (statAvgEl) statAvgEl.textContent = `${Math.round(grandTotalCartonsMonth / divisorDays)} كرتونة/يوم`;
+
+
 
             let bodyRowsHTML = '';
             Object.entries(itemDailyMap).forEach(([itemName, data]) => {
@@ -1684,112 +1847,107 @@
             if (targetRow) {
                 const input = targetRow.querySelector('.item-input');
                 const qtyInput = targetRow.querySelector('.qty-input');
-                if (input) input.value = itemName;
+                if (input) {
+                    input.value = itemName;
+                    input.dispatchEvent(new Event('input'));
+                }
                 if (qtyInput) qtyInput.focus();
             }
         }
 
-        function calculateDynamicReorderPoint(itemName) {
+        function calculateDualWindowReorderPoint(itemName) {
             const itemObj = items.find(i => i.name === itemName);
             const leadTime = itemObj && itemObj.leadTime !== undefined ? itemObj.leadTime : 3; 
 
-            const now = new Date();
-            const nowTime = now.getTime();
-            const THIRTY_DAYS = 30 * 24 * 60 * 60 * 1000;
-            let totalOutLast30 = 0;
+            const nowTime = new Date().getTime();
+            const FOURTEEN_DAYS = 14 * 24 * 60 * 60 * 1000;
+            const NINETY_DAYS = 90 * 24 * 60 * 60 * 1000;
+
+            let outLast14 = 0;
+            let outLast90 = 0;
 
             invoices.filter(inv => inv.type === 'OUT').forEach(inv => {
                 const invTime = inv.isoDate ? new Date(inv.isoDate).getTime() : nowTime;
-                if ((nowTime - invTime) <= THIRTY_DAYS) {
+                const diff = nowTime - invTime;
+                if (diff <= NINETY_DAYS) {
                     inv.items.forEach(it => {
                         if (it.name === itemName) {
                             const num = parseFloat(it.qtyVal !== undefined ? it.qtyVal : (String(it.qty).replace(/[^\d.]/g, ''))) || 0;
-                            totalOutLast30 += num;
+                            outLast90 += num;
+                            if (diff <= FOURTEEN_DAYS) {
+                                outLast14 += num;
+                            }
                         }
                     });
                 }
             });
 
-            const dailyAvg = totalOutLast30 / 30; 
-            let baseROP = dailyAvg * leadTime + (dailyAvg * 1.5);
-
-            const curMonth = now.getMonth();
-            const curYear = now.getFullYear();
-            const prevYear = curYear - 1;
-
-            let currentMonthThisYear = 0;
-            let sameMonthLastYear = 0;
-
-            invoices.filter(inv => inv.type === 'OUT').forEach(inv => {
-                if (!inv.isoDate) return;
-                const d = new Date(inv.isoDate);
-                const m = d.getMonth();
-                const y = d.getFullYear();
-
-                inv.items.forEach(it => {
-                    if (it.name === itemName) {
-                        const sumQty = parseFloat(it.qtyVal !== undefined ? it.qtyVal : (String(it.qty).replace(/[^\d.]/g, ''))) || 0;
-                        if (m === curMonth && y === curYear) currentMonthThisYear += sumQty;
-                        if (m === curMonth && y === prevYear) sameMonthLastYear += sumQty;
-                    }
-                });
-            });
-
-            let seasonalMultiplier = 1.0;
-            if (sameMonthLastYear > 5 && sameMonthLastYear > currentMonthThisYear * 0.8) {
-                seasonalMultiplier = 1.35; 
-            }
-
-            const dynamicROP = Math.round(baseROP * seasonalMultiplier);
-            return Math.max(dynamicROP, 5); 
+            const dailyAvg14 = outLast14 / 14;
+            const dailyAvg90 = outLast90 / 90;
+            
+            let effectiveDaily = dailyAvg14 > (dailyAvg90 * 1.35) ? (dailyAvg14 * 1.2) : Math.max(dailyAvg14, dailyAvg90);
+            
+            let baseROP = effectiveDaily * leadTime + (effectiveDaily * 1.5);
+            return Math.max(Math.round(baseROP), 5);
         }
+
+        let allAiRecommendations = [];
 
         function renderAiSmartAdvisor() {
             const container = document.getElementById('ai-smart-advisor-container');
             if (!container) return;
 
-            let recommendations = [];
-            const now = new Date();
-            const nowTime = now.getTime();
-            const THIRTY_DAYS = 30 * 24 * 60 * 60 * 1000;
+            allAiRecommendations = [];
+            const nowTime = new Date().getTime();
+            const FOURTEEN_DAYS = 14 * 24 * 60 * 60 * 1000;
 
             items.forEach(i => {
-                let outLast30 = 0;
+                if (i.hiddenFromOrders) return;
+
+                let outLast14 = 0;
+                let outLast90 = 0;
+
                 invoices.filter(inv => inv.type === 'OUT').forEach(inv => {
                     const invTime = inv.isoDate ? new Date(inv.isoDate).getTime() : nowTime;
-                    if ((nowTime - invTime) <= THIRTY_DAYS) {
+                    const diff = nowTime - invTime;
+                    if (diff <= (90 * 24 * 60 * 60 * 1000)) {
                         inv.items.forEach(it => {
                             if (it.name === i.name) {
-                                outLast30 += parseFloat(it.qtyVal !== undefined ? it.qtyVal : (String(it.qty).replace(/[^\d.]/g, ''))) || 0;
+                                const num = parseFloat(it.qtyVal !== undefined ? it.qtyVal : (String(it.qty).replace(/[^\d.]/g, ''))) || 0;
+                                outLast90 += num;
+                                if (diff <= FOURTEEN_DAYS) outLast14 += num;
                             }
                         });
                     }
                 });
 
-                const dynamicMin = calculateDynamicReorderPoint(i.name);
+                const dynamicMin = calculateDualWindowReorderPoint(i.name);
+                const isSurgeWave = (outLast14 / 14) > ((outLast90 / 90) * 1.3) && (outLast14 / 14) > 1;
 
-                if (Number(i.qty) <= dynamicMin) {
+                if (Number(i.qty) <= dynamicMin || isSurgeWave) {
                     const suggestedAmount = Math.max(10, (i.maxQty || 2000) - i.qty);
-                    recommendations.push({
+                    allAiRecommendations.push({
                         name: i.name,
                         currentQty: i.qty,
                         suggestedQty: suggestedAmount,
-                        urgency: Number(i.qty) <= (dynamicMin * 0.5) ? 'حرج جداً 🚨' : 'مطلوب قريباً ⚠️'
+                        urgency: isSurgeWave ? '🌊 موجة طلب تصاعدية سريعة!' : (Number(i.qty) <= (dynamicMin * 0.5) ? 'حرج جداً 🚨' : 'مطلوب قريباً ⚠️')
                     });
                 }
             });
 
-            if (recommendations.length === 0) {
+            if (allAiRecommendations.length === 0) {
                 container.innerHTML = `
                     <div style="text-align:center; padding:12px; color:var(--success); font-weight:bold;">
-                        ✨ المخزون مستقر تماماً يا حسين! الذكاء الاصطناعي لا يرى أي حاجة فورية لإرسال طلبيات للمعمل حالياً.
+                        ✨ المخزون مستقر تماماً يا حسين! نافذة التنبؤ المزدوجة لا ترصد أي ضغوط أو موجات طلب غير معتادة حالياً.
                     </div>
                 `;
                 return;
             }
 
-            let html = `<div style="font-size:0.82rem; color:#1e40af; margin-bottom:8px; font-weight:bold;">💡 توصيات الذكاء الاصطناعي بناءً على سرعة الاستهلاك الحالية:</div>`;
-            recommendations.forEach(rec => {
+            const displayedRecs = allAiRecommendations.slice(0, aiAdvisorDisplayLimit);
+
+            let html = `<div style="font-size:0.82rem; color:#1e40af; margin-bottom:8px; font-weight:bold;">💡 توصيات الذكاء الاصطناعي (تحليل النافذة الزمنية المزدوجة 14 يوم مقابل 90 يوم):</div>`;
+            displayedRecs.forEach(rec => {
                 html += `
                     <div style="display:flex; justify-content:space-between; align-items:center; background:#f8fafc; padding:10px; border-radius:8px; margin-bottom:8px; border:1px solid #bfdbfe; flex-wrap:wrap; gap:6px;">
                         <div>
@@ -1803,7 +1961,21 @@
                     </div>
                 `;
             });
+
+            if (aiAdvisorDisplayLimit < allAiRecommendations.length) {
+                html += `
+                    <div style="text-align:center; margin-top:12px;">
+                        <button onclick="loadMoreAiAdvisorItems()" class="btn" style="background: #e2e8f0; color: var(--primary); font-weight: bold; width: auto; padding: 8px 20px; font-size:0.82rem;">👇 عرض المزيد من التوصيات الذكية</button>
+                    </div>
+                `;
+            }
+
             container.innerHTML = html;
+        }
+
+        function loadMoreAiAdvisorItems() {
+            aiAdvisorDisplayLimit += 10;
+            renderAiSmartAdvisor();
         }
 
         function addAiRecommendationToOrders(itemName, qty) {
@@ -1816,7 +1988,7 @@
             const now = new Date();
             const dateStr = now.toLocaleDateString('ar-EG') + ' ' + now.toLocaleTimeString('ar-EG', {hour:'2-digit', minute:'2-digit'});
             
-            orders.unshift({ id: Date.now().toString(), itemName: itemName, requestedQty: qty, date: dateStr });
+            orders.unshift({ id: 'ord_' + Date.now() + '_' + Math.floor(Math.random() * 1000), itemName: itemName, requestedQty: qty, date: dateStr, status: 'NEW' });
             saveData();
             alert(`✅ تمت إضافة طلب المادة (${itemName}) بعدد (${qty} كرتونة) بنجاح إلى جدول الطلبات!`);
         }
@@ -2270,7 +2442,7 @@
             } else {
                 let html = '';
                 matched.forEach(i => {
-                    const dynamicMin = calculateDynamicReorderPoint(i.name);
+                    const dynamicMin = calculateDualWindowReorderPoint(i.name);
                     const isLow = Number(i.qty) <= dynamicMin;
                     const daysInfo = calculateStockDaysLeft(i.name, Number(i.qty));
                     html += `
@@ -2298,6 +2470,7 @@
 
         function goToInventory(filterType) {
             currentFilter = filterType;
+            inventoryDisplayLimit = 10;
             document.getElementById('filter-all').classList.toggle('active', filterType === 'all');
             document.getElementById('filter-low').classList.toggle('active', filterType === 'low');
             
@@ -2318,19 +2491,68 @@
             renderFactoryDirectLogs();
             runSideBySideComparison();
             renderMonthlyItemMatrix();
+            runDualCustomerComparison();
         }
 
         function renderDashboard() {
             document.getElementById('dash-total-items').textContent = items.length;
             document.getElementById('dash-total-qty').textContent = items.reduce((s, i) => s + Number(i.qty), 0);
             
-            const lowItems = items.filter(i => Number(i.qty) <= calculateDynamicReorderPoint(i.name));
+            // جلب كافة المواد التي دون الحد الأدنى بغض النظر هل تم طلبها أم لا
+            const lowItems = items.filter(i => {
+                if (i.hiddenFromOrders) return false;
+                return Number(i.qty) <= calculateDualWindowReorderPoint(i.name);
+            });
+
             document.getElementById('dash-low-stock').textContent = lowItems.length;
+
+            const dashLowTableBody = document.getElementById('dash-low-stock-table-body');
+            if (dashLowTableBody) {
+                if (lowItems.length === 0) {
+                    dashLowTableBody.innerHTML = '<tr><td colspan="6" style="text-align:center; padding:15px; color:var(--text-muted);">✨ لا توجد مواد دون الحد الأدنى حالياً</td></tr>';
+                } else {
+                    let lowTableHTML = '';
+                    lowItems.forEach((li, idx) => {
+                        const dynamicMin = calculateDualWindowReorderPoint(li.name);
+                        const existingOrder = orders.find(o => o.itemName === li.name);
+                        
+                        let statusBadge = '';
+                        let rowBg = '#fff1f2'; // لون أحمر خفيف للمواد غير المطلوبة بعد
+
+                        if (existingOrder) {
+                            if (existingOrder.status === 'SENT') {
+                                statusBadge = `<span style="background:#fde68a; color:#b45309; padding:4px 8px; border-radius:6px; font-weight:bold; font-size:0.75rem; border:1px solid #fcd34d;">⏳ مطلوبة (${existingOrder.requestedQty} كرتونة)</span>`;
+                                rowBg = '#fef3c7'; // لون أصفر للمواد التي تم طلبها وفي انتظار الاستلام
+                            } else {
+                                statusBadge = `<span style="background:#e0f2fe; color:#0369a1; padding:4px 8px; border-radius:6px; font-weight:bold; font-size:0.75rem; border:1px solid #7dd3fc;">📝 غير مطلوبة بعد  (${existingOrder.requestedQty} كرتونة)</span>`;
+                                rowBg = '#eff6ff';
+                            }
+                        } else {
+                            statusBadge = `<span style="background:#fee2e2; color:#dc2626; padding:4px 8px; border-radius:6px; font-weight:bold; font-size:0.75rem; border:1px solid #fca5a5;">غير مطلوبة بعد</span>`;
+                        }
+
+                        lowTableHTML += `
+                            <tr style="border-bottom: 1px solid #e2e8f0; background: ${rowBg};">
+                                <td style="padding: 10px 12px; color: var(--text-muted);">${idx + 1}</td>
+                                <td style="padding: 10px 12px;"><b>${li.name}</b></td>
+                                <td style="padding: 10px 12px; text-align: center; color: var(--danger); font-weight: bold;">${li.qty} كرتونة</td>
+                                <td style="padding: 10px 12px; text-align: center; color: var(--warning); font-weight: bold;">${dynamicMin} كرتونة</td>
+                                <td style="padding: 10px 12px; text-align: center;">${statusBadge}</td>
+                                <td style="padding: 10px 12px; text-align: center;">
+                                    <button class="btn-order" onclick="goToOrdersTab()" style="padding: 4px 10px; font-size: 0.72rem; background:#3b82f6; color:#fff; border-color:#2563eb;">عرض بالطلبات 📋</button>
+                                </td>
+                            </tr>
+                        `;
+                    });
+                    dashLowTableBody.innerHTML = lowTableHTML;
+                }
+            }
 
             renderAiSmartAdvisor();
             renderWeeklyMomentumRadar();
             renderYoYPulseMatch();
             renderMonthlyItemMatrix();
+            runDualCustomerComparison();
 
             const summarySelectedDate = document.getElementById('summary-single-date').value;
             const summaryInvoices = invoices.filter(inv => {
@@ -2456,6 +2678,11 @@
             }
         }
 
+        function goToOrdersTab() {
+            const ordersTabBtn = document.querySelectorAll('.desktop-nav-btn')[5];
+            switchTab('view-orders', ordersTabBtn);
+        }
+
         function showSummaryDetails(type) {
             const summarySelectedDate = document.getElementById('summary-single-date').value;
             const modal = document.getElementById('summary-details-modal');
@@ -2550,16 +2777,47 @@
             const row = document.createElement('div');
             row.className = 'item-row';
             row.innerHTML = `
-                <input type="text" class="form-control item-input" list="items-datalist" placeholder="🔍 اختر الصنف..." value="${presetName}" autocomplete="off" enterkeyhint="next">
-                <input type="text" class="form-control qty-input" placeholder="عدد الكراتين..." value="${presetQty}" enterkeyhint="next">
+                <div style="flex: 2; min-width: 180px; display: flex; flex-direction: column; gap: 3px;">
+                    <input type="text" class="form-control item-input" list="items-datalist" placeholder="🔍 اختر الصنف..." value="${presetName}" autocomplete="off" enterkeyhint="next">
+                    <span class="item-stock-hint" style="font-size: 0.75rem; font-weight: bold; min-height: 16px;"></span>
+                </div>
+                <div style="flex: 1; min-width: 90px;">
+                    <input type="text" class="form-control qty-input" placeholder="عدد الكراتين..." value="${presetQty}" enterkeyhint="next">
+                </div>
                 <button type="button" class="remove-btn" onclick="removeRow(this)">✕</button>
             `;
             container.appendChild(row);
 
             const itemInput = row.querySelector('.item-input');
             const qtyInput = row.querySelector('.qty-input');
+            const hintSpan = row.querySelector('.item-stock-hint');
 
-            itemInput.addEventListener('change', () => { if (itemInput.value.trim() !== '') qtyInput.focus(); });
+            function refreshStockHint() {
+                const val = itemInput.value.trim();
+                if (!val) {
+                    hintSpan.textContent = '';
+                    return;
+                }
+                const found = items.find(i => i.name === val);
+                if (found) {
+                    hintSpan.textContent = `📦 الرصيد المتوفر: ${found.qty} كرتونة`;
+                    hintSpan.style.color = found.qty > 0 ? '#059669' : '#dc2626';
+                } else {
+                    hintSpan.textContent = '⚠️ الصنف غير مسجل في الجرد';
+                    hintSpan.style.color = '#dc2626';
+                }
+            }
+
+            itemInput.addEventListener('input', refreshStockHint);
+            itemInput.addEventListener('change', () => { 
+                refreshStockHint();
+                if (itemInput.value.trim() !== '') qtyInput.focus(); 
+            });
+
+            if (presetName) {
+                refreshStockHint();
+            }
+
             itemInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); qtyInput.focus(); } });
             qtyInput.addEventListener('keydown', (e) => {
                 if (e.key === 'Enter') {
@@ -2580,6 +2838,8 @@
             } else {
                 row.querySelector('.item-input').value = '';
                 row.querySelector('.qty-input').value = '';
+                const hint = row.querySelector('.item-stock-hint');
+                if(hint) hint.textContent = '';
                 row.querySelector('.item-input').focus();
             }
         }
@@ -2588,14 +2848,18 @@
             const maxCapacity = parseFloat(document.getElementById('orders-truck-capacity').value) || 100;
             let totalCartons = 0;
 
-            orders.forEach(o => { totalCartons += o.requestedQty; });
+            orders.forEach(o => { 
+                if (!o.status || o.status === 'NEW') {
+                    totalCartons += o.requestedQty; 
+                }
+            });
 
             document.getElementById('orders-total-cartons-badge').textContent = `${totalCartons} كرتونة إجمالية`;
 
             let percentage = (totalCartons / maxCapacity) * 100;
             let percentageDisplay = percentage.toFixed(1);
 
-            document.getElementById('orders-truck-total-text').textContent = `إجمالي حجم الطلبات: ${totalCartons} كرتونة (من أصل ${maxCapacity} السعة الكلية للسيارة)`;
+            document.getElementById('orders-truck-total-text').textContent = `إجمالي حجم الطلبات الجديدة: ${totalCartons} كرتونة (من أصل ${maxCapacity} السعة الكلية للسيارة)`;
 
             const bar = document.getElementById('orders-truck-progress-bar');
             const resultBox = document.getElementById('orders-truck-status-result');
@@ -2628,38 +2892,6 @@
             }
         }
 
-        function addAllLowStockToOrders() {
-            const lowItems = items.filter(i => Number(i.qty) <= calculateDynamicReorderPoint(i.name));
-            if (lowItems.length === 0) {
-                alert('✨ ممتاز يا حسين! لا توجد مواد وصلت لنقطة الطلب الموسميّة حالياً.');
-                return;
-            }
-
-            const confirmAdd = confirm(`⚠️ وجد النظام (${lowItems.length}) مادة وصلت للحد الأدنى الموسمي.\nهل تريد إضافتها تلقائياً إلى جدول الطلبات؟`);
-            if (!confirmAdd) return;
-
-            const now = new Date();
-            const dateStr = now.toLocaleDateString('ar-EG') + ' ' + now.toLocaleTimeString('ar-EG', {hour:'2-digit', minute:'2-digit'});
-
-            let addedCount = 0;
-            lowItems.forEach(item => {
-                const alreadyExists = orders.some(o => o.itemName === item.name);
-                if (!alreadyExists) {
-                    const suggestedQty = Math.max(1, (item.maxQty || 2000) - item.qty);
-                    orders.unshift({
-                        id: Date.now().toString() + Math.random().toString(36).substr(2, 4),
-                        itemName: item.name,
-                        requestedQty: suggestedQty,
-                        date: dateStr
-                    });
-                    addedCount++;
-                }
-            });
-
-            saveData();
-            alert(`✅ تمت إضافة (${addedCount}) مادة ناقصة بنجاح إلى قائمة الطلبات!`);
-        }
-
         function openManualOrderModal() {
             document.getElementById('manual-order-form').reset();
             document.getElementById('manual-order-modal').style.display = 'flex';
@@ -2681,7 +2913,7 @@
             if (!itemObj) {
                 const createNew = confirm(`الصنف (${itemName}) غير مسجل في جدول الجرد.\nهل تريد إضافته للمستودع تلقائياً؟`);
                 if (createNew) {
-                    items.push({ id: Date.now().toString(), name: itemName, qty: 0, maxQty: 2000, leadTime: 3, auditNote: "" });
+                    items.push({ id: Date.now().toString(), name: itemName, qty: 0, maxQty: 2000, leadTime: 3, auditNote: "", hiddenFromOrders: false });
                     saveData();
                 } else {
                     return;
@@ -2691,14 +2923,14 @@
             const now = new Date();
             const dateStr = now.toLocaleDateString('ar-EG') + ' ' + now.toLocaleTimeString('ar-EG', {hour:'2-digit', minute:'2-digit'});
             
-            orders.unshift({ id: Date.now().toString(), itemName: itemName, requestedQty: qty, date: dateStr });
+            orders.unshift({ id: 'ord_' + Date.now() + '_' + Math.floor(Math.random() * 1000), itemName: itemName, requestedQty: qty, date: dateStr, status: 'NEW', isManual: true });
             saveData();
             closeManualOrderModal();
             alert('تمت إضافة الطلب بنجاح!');
         }
 
         function editOrderQty(orderId) {
-            const order = orders.find(o => o.id === orderId);
+            const order = orders.find(o => String(o.id) === String(orderId));
             if (!order) return;
             const newQty = prompt(`تعديل عدد الكراتين المطلوبة للمادة (${order.itemName}):`, order.requestedQty);
             if (newQty === null || isNaN(newQty) || parseFloat(newQty) <= 0) return;
@@ -2742,7 +2974,6 @@
 
                 let invoiceItems = [];
                 let isValid = true;
-                let diffSummaryHTML = '';
 
                 rows.forEach(row => {
                     const nameInput = row.querySelector('.item-input');
@@ -2759,35 +2990,10 @@
                         const item = items.find(i => i.name === name);
                         if (!item) { alert(`❌ الصنف (${name}) غير مسجل في جدول الجرد!`); isValid = false; return; }
                         if (qtyVal <= 0) { alert(`⚠ يجب كتابة عدد كراتين صحيح للصنف (${name})!`); isValid = false; return; }
-                        
-                        let oldQty = item.qty;
-                        let newQtyCalc = oldQty;
-
-                        if (type === 'IN' || type === 'RETURN') {
-                            newQtyCalc = oldQty + qtyVal;
-                            diffSummaryHTML += `
-                                <div style="background:#f0fdf4; border:1px solid #bbf7d0; padding:10px; border-radius:8px; margin-bottom:8px; text-align:right;">
-                                    <b>📦 ${name}</b><br>
-                                    الرصيد السابق قبل الوارد: <span style="color:#64748b;">${oldQty}</span><br>
-                                    الكمية الواردة من المعمل: <span style="color:#059669; font-weight:bold;">+${qtyVal}</span><br>
-                                    <b>الرصيد الجديد بعد الإضافة: <span style="color:#16a34a; font-size:1.1rem;">${newQtyCalc} كرتونة</span></b>
-                                </div>
-                            `;
-                        } else if (type === 'OUT') {
-                            if (oldQty < qtyVal) {
-                                alert(`❌ عذراً يا حسين، الرصيد المتوفر في المستودع: [${oldQty} كرتونة] فقط للصنف (${name})!`);
-                                isValid = false;
-                                return;
-                            }
-                            newQtyCalc = oldQty - qtyVal;
-                            diffSummaryHTML += `
-                                <div style="background:#fef2f2; border:1px solid #fca5a5; padding:10px; border-radius:8px; margin-bottom:8px; text-align:right;">
-                                    <b>📦 ${name}</b><br>
-                                    الرصيد السابق: <span style="color:#64748b;">${oldQty}</span><br>
-                                    الكمية المخرجة: <span style="color:#dc2626; font-weight:bold;">-${qtyVal}</span><br>
-                                    <b>الرصيد المتبقي بعد الإخراج: <span style="color:#b91c1c; font-size:1.1rem;">${newQtyCalc} كرتونة</span></b>
-                                </div>
-                            `;
+                        if (type === 'OUT' && item.qty < qtyVal) {
+                            alert(`❌ عذراً يا حسين، الرصيد المتوفر في المستودع: [${item.qty} كرتونة] فقط!`);
+                            isValid = false;
+                            return;
                         }
                     } else {
                         if (qtyVal <= 0) { alert(`⚠ يجب كتابة عدد كراتين صحيح للصنف (${name})!`); isValid = false; return; }
@@ -2799,29 +3005,10 @@
                 if (!isValid) return;
                 if (invoiceItems.length === 0) { alert('⚠️ يرجى إدخال صنف صحيح واحد على الأقل.'); return; }
 
-                pendingMovementData = { type, note, formattedDate, rawISODate, invoiceItems };
-
-                if (type === 'IN' || type === 'OUT') {
-                    document.getElementById('live-diff-body').innerHTML = diffSummaryHTML;
-                    document.getElementById('live-diff-modal').style.display = 'flex';
-                } else {
-                    confirmAndExecuteSaveMovement();
-                }
+                finalizeMovement(type, note, formattedDate, rawISODate, invoiceItems);
             } catch(err) {
                 alert('حدث خطأ أثناء الحفظ: ' + err.message);
             }
-        }
-
-        function closeLiveDiffModal() {
-            document.getElementById('live-diff-modal').style.display = 'none';
-        }
-
-        function confirmAndExecuteSaveMovement() {
-            closeLiveDiffModal();
-            if (!pendingMovementData) return;
-            const { type, note, formattedDate, rawISODate, invoiceItems } = pendingMovementData;
-            finalizeMovement(type, note, formattedDate, rawISODate, invoiceItems);
-            pendingMovementData = null;
         }
 
         function finalizeMovement(type, note, formattedDate, rawISODate, invoiceItems) {
@@ -2833,6 +3020,18 @@
                         else item.qty -= invItem.qtyVal;
                     }
                 });
+
+                if (type === 'IN') {
+                    invoiceItems.forEach(invItem => {
+                        const item = items.find(i => i.name === invItem.name);
+                        if (item) {
+                            const dynamicMin = calculateDualWindowReorderPoint(item.name);
+                            if (item.qty > dynamicMin) {
+                                orders = orders.filter(o => o.itemName !== item.name);
+                            }
+                        }
+                    });
+                }
             }
 
             const finalInvoiceId = editingInvoiceId ? editingInvoiceId : Date.now().toString();
@@ -2959,7 +3158,7 @@
             const maxQty = parseInt(document.getElementById('item-max-qty').value) || 2000; 
             const leadTime = parseInt(document.getElementById('item-lead-time').value) || 3; 
             
-            items.push({ id: Date.now().toString(), name, qty, maxQty, leadTime, auditNote: "" }); 
+            items.push({ id: Date.now().toString(), name, qty, maxQty, leadTime, auditNote: "", hiddenFromOrders: false }); 
             saveData(); 
 
             document.getElementById('add-item-form').reset(); 
@@ -2969,8 +3168,14 @@
         
         function setInventoryFilter(filterType) {
             currentFilter = filterType;
+            inventoryDisplayLimit = 10;
             document.getElementById('filter-all').classList.toggle('active', filterType === 'all');
             document.getElementById('filter-low').classList.toggle('active', filterType === 'low');
+            renderItems();
+        }
+
+        function loadMoreInventoryItems() {
+            inventoryDisplayLimit += 10;
             renderItems();
         }
 
@@ -2998,30 +3203,112 @@
             else return { text: '💤 راكد / بطيء', color: '#dc2626', bg: '#fee2e2' };
         }
 
+        function calculateAbcXyzMatrixTag(itemName, itemTotalQty) {
+            let itemTotalOut = 0;
+            let monthlyMap = {};
+            
+            invoices.filter(inv => inv.type === 'OUT' && inv.isoDate).forEach(inv => {
+                inv.items.forEach(it => {
+                    if (it.name === itemName) {
+                        const mKey = inv.isoDate.slice(0, 7);
+                        const qVal = parseFloat(it.qtyVal !== undefined ? it.qtyVal : (String(it.qty).replace(/[^\d.]/g, ''))) || 0;
+                        monthlyMap[mKey] = (monthlyMap[mKey] || 0) + qVal;
+                        itemTotalOut += qVal;
+                    }
+                });
+            });
+
+            let allItemsTotalOut = 0;
+            let allItemsMap = {};
+            items.forEach(i => allItemsMap[i.name] = 0);
+            
+            invoices.filter(inv => inv.type === 'OUT').forEach(inv => {
+                inv.items.forEach(it => {
+                    const qVal = parseFloat(it.qtyVal !== undefined ? it.qtyVal : (String(it.qty).replace(/[^\d.]/g, ''))) || 0;
+                    allItemsTotalOut += qVal;
+                    if (allItemsMap[it.name] !== undefined) allItemsMap[it.name] += qVal;
+                });
+            });
+
+            let sortedItemsByOut = Object.entries(allItemsMap).sort((a,b) => b[1] - a[1]);
+            let rankIndex = sortedItemsByOut.findIndex(([name]) => name === itemName);
+            
+            let cumulativeOut = 0;
+            for(let i=0; i<=rankIndex; i++) {
+                cumulativeOut += sortedItemsByOut[i][1];
+            }
+            let abcClass = 'C';
+            if (allItemsTotalOut > 0) {
+                let ratio = cumulativeOut / allItemsTotalOut;
+                if (ratio <= 0.80) abcClass = 'A';
+                else if (ratio <= 0.95) abcClass = 'B';
+            }
+
+            let monthValues = Object.values(monthlyMap);
+            let xyzClass = 'Z';
+            if (monthValues.length >= 2) {
+                let mean = monthValues.reduce((a,b)=>a+b,0) / monthValues.length;
+                if (mean > 0) {
+                    let variance = monthValues.reduce((sum, val) => sum + Math.pow(val - mean, 2), 0) / monthValues.length;
+                    let stdDev = Math.sqrt(variance);
+                    let cv = stdDev / mean;
+                    if (cv < 0.5) xyzClass = 'X';
+                    else if (cv < 1.0) xyzClass = 'Y';
+                    else xyzClass = 'Z';
+                } else {
+                    xyzClass = 'Z';
+                }
+            } else {
+                xyzClass = itemTotalOut > 10 ? 'Y' : 'Z';
+            }
+
+            let volumeText = 'راكد / بطيء';
+            let volumeBg = '#f1f5f9';
+            let volumeColor = '#64748b';
+            if (abcClass === 'A') { volumeText = 'مهم جداً'; volumeBg = '#dcfce7'; volumeColor = '#166534'; }
+            else if (abcClass === 'B') { volumeText = 'متوسط الحركة'; volumeBg = '#e0f2fe'; volumeColor = '#0369a1'; }
+
+            let patternText = 'عشوائي مفاجئ';
+            if (xyzClass === 'X') patternText = 'ثابت يومياً';
+            else if (xyzClass === 'Y') patternText = 'موسمي متذبذب';
+
+            let tagFull = `${volumeText} + ${patternText}`;
+            let tagBg = volumeBg;
+            let tagColor = volumeColor;
+
+            return { tagFull, tagBg, tagColor };
+        }
+
         function renderItems() { 
             const tbody = document.getElementById('items-table-body'); 
             const s = document.getElementById('search-input').value.toLowerCase(); 
+            const loadMoreBox = document.getElementById('inventory-load-more-box');
             tbody.innerHTML = ''; 
 
             let filteredItems = items.filter(i => i.name.toLowerCase().includes(s));
             if (currentFilter === 'low') {
-                filteredItems = filteredItems.filter(i => Number(i.qty) <= calculateDynamicReorderPoint(i.name));
+                filteredItems = filteredItems.filter(i => !i.hiddenFromOrders && Number(i.qty) <= calculateDualWindowReorderPoint(i.name));
             }
 
             if (filteredItems.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; color:var(--text-muted); padding:20px;">لا توجد مواد مطابقة</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="7" style="text-align:center; color:var(--text-muted); padding:20px;">لا توجد مواد مطابقة</td></tr>';
+                if(loadMoreBox) loadMoreBox.style.display = 'none';
                 return;
             }
 
-            filteredItems.forEach((i, index) => { 
+            const displayedItems = filteredItems.slice(0, inventoryDisplayLimit);
+
+            displayedItems.forEach((i, index) => { 
                 if (i.leadTime === undefined) i.leadTime = 3;
-                const dynamicMin = calculateDynamicReorderPoint(i.name);
+                const dynamicMin = calculateDualWindowReorderPoint(i.name);
                 const isLow = Number(i.qty) <= dynamicMin;
                 const activity = getItemActivityStatus(i.name);
                 const daysInfo = calculateStockDaysLeft(i.name, Number(i.qty));
+                const abcXyz = calculateAbcXyzMatrixTag(i.name, Number(i.qty));
+                const isHidden = i.hiddenFromOrders === true;
 
                 tbody.innerHTML += `
-                <tr class="${isLow ? 'low-stock-row' : ''}">
+                <tr class="${isLow && !isHidden ? 'low-stock-row' : ''}">
                     <td style="color:var(--text-muted);">${index + 1}</td>
                     <td>
                         <span onclick="quickEditItemName('${i.id}')" style="cursor:pointer; display:block;" title="انقر لتعديل الاسم سريعاً">
@@ -3030,13 +3317,19 @@
                         </span>
                         <div style="margin-top:4px;">
                             <span style="font-size:0.7rem; background:${activity.bg}; color:${activity.color}; padding:3px 8px; border-radius:6px; font-weight:bold; display:inline-block;">${activity.text}</span>
-                            ${isLow ? '<span class="alert-badge" style="margin-right:6px;">⚠️ مطلوب من المعمل</span>' : ''}
+                            ${isLow && !isHidden ? '<span class="alert-badge" style="margin-right:6px;">⚠️ مطلوب من المعمل</span>' : ''}
+                            ${isHidden ? '<span style="font-size:0.7rem; background:#fee2e2; color:#dc2626; padding:3px 8px; border-radius:6px; font-weight:bold; display:inline-block; margin-right:6px;">🔒 مخفي من الطلبات (عينة/مساطر)</span>' : ''}
                         </div>
                     </td>
                     <td style="text-align: center;">
                         <span onclick="quickEditItemQty('${i.id}')" style="cursor:pointer; display:inline-block; padding:6px 10px; background:#e0f2fe; border-radius:8px;" title="انقر لتعديل الكمية مباشرة">
-                            <b style="color: ${isLow ? 'var(--danger)' : 'var(--primary-accent)'}; font-size:1.1rem;">${i.qty}</b>
+                            <b style="color: ${isLow && !isHidden ? 'var(--danger)' : 'var(--primary-accent)'}; font-size:1.1rem;">${i.qty}</b>
                             <span style="font-size:0.65rem; color:var(--primary-accent); display:block;">✏ الكراتين</span>
+                        </span>
+                    </td>
+                    <td style="text-align: center;">
+                        <span style="display:inline-block; padding:6px 10px; background:${abcXyz.tagBg}; color:${abcXyz.tagColor}; border-radius:8px; font-weight:700; font-size:0.78rem; line-height:1.4;" title="التصنيف الاستراتيجي للصنف">
+                            ${abcXyz.tagFull}
                         </span>
                     </td>
                     <td style="text-align: center;">
@@ -3045,22 +3338,43 @@
                         </span>
                     </td>
                     <td style="text-align: center;">
-                        <span onclick="editItemDetails('${i.id}')" style="cursor:pointer; display:inline-block; padding:6px 10px; background:#fef3c7; border-radius:8px; border:1px solid #fcd34d;" title="نقطة الطلب محسوبة موسميّاً">
+                        <span onclick="editItemDetails('${i.id}')" style="cursor:pointer; display:inline-block; padding:6px 10px; background:#fef3c7; border-radius:8px; border:1px solid #fcd34d;" title="نقطة الطلب محسوبة بالنافذة المزدوجة">
                             <b style="color:#b45309; font-size:1rem;">${dynamicMin} كرتونة</b>
-                            <span style="font-size:0.65rem; color:#b45309; display:block;">توريد: ${i.leadTime || 3} أيام (موسمي) 🔮</span>
+                            <span style="font-size:0.65rem; color:#b45309; display:block;">توريد: ${i.leadTime || 3} أيام (مزدوج) 🔮</span>
                         </span>
                     </td>
                     <td style="text-align: center;">
                         <div class="actions-group" style="justify-content: center;">
                             <button class="btn-adjust" onclick="openAdjustmentModal('${i.id}')" title="تسوية جردية">تسوية ⚖️</button>
+                            <button class="btn-edit" onclick="toggleItemHideOrders('${i.id}')" title="إخفاء أو إظهار من الطلبات">${isHidden ? 'إظهار 🔓' : 'إخفاء 🔒'}</button>
                             <button class="btn-edit" onclick="editItemDetails('${i.id}')" title="إعدادات">إعدادات ⚙</button>
                             <button class="btn-history" onclick="showItemHistory('${i.name}')" title="حركة الصنف">حركة 📊</button>
-                            <button class="btn-order" onclick="createOrder('${i.id}')" title="طلب معمل">طلب 📋</button>
                             <button class="btn-delete" onclick="deleteItem('${i.id}')" title="حذف">حذف 🗑</button>
                         </div>
                     </td>
                 </tr>`; 
             }); 
+
+            if (loadMoreBox) {
+                if (inventoryDisplayLimit < filteredItems.length) {
+                    loadMoreBox.style.display = 'block';
+                } else {
+                    loadMoreBox.style.display = 'none';
+                }
+            }
+        }
+
+        function toggleItemHideOrders(id) {
+            const item = items.find(i => i.id === id);
+            if (!item) return;
+            item.hiddenFromOrders = !item.hiddenFromOrders;
+            
+            if (item.hiddenFromOrders) {
+                orders = orders.filter(o => o.itemName !== item.name);
+            }
+
+            saveData();
+            alert(item.hiddenFromOrders ? `🔒 تم إخفاء الصنف (${item.name}) من واجهة وقائمة الطلبات بنجاح!` : `🔓 تمت إبطال الإخفاء وأصبح الصنف (${item.name}) ظاهراً وطبيعياً في الطلبات!`);
         }
 
         function openAdjustmentModal(itemId) {
@@ -3531,45 +3845,145 @@
             html2pdf().from(document.getElementById('inventory-pdf-template')).save(`جرد_${new Date().toISOString().slice(0,10)}.pdf`).then(closeInventoryModal);
         }
 
-        function createOrder(id) {
-            const item = items.find(i => i.id === id);
-            if (!item) return;
-            const suggestedQty = (item.maxQty || 2000) - item.qty;
-            const defaultPromptVal = suggestedQty > 0 ? suggestedQty : 100;
-
-            const reqQty = prompt(`💡 عدد الكراتين المقترح للمعمل:\nأدخل عدد الكراتين للمادة (${item.name}):`, defaultPromptVal);
-            if (!reqQty || isNaN(reqQty) || parseFloat(reqQty) <= 0) return;
-            const now = new Date();
-            const dateStr = now.toLocaleDateString('ar-EG') + ' ' + now.toLocaleTimeString('ar-EG', {hour:'2-digit', minute:'2-digit'});
-            orders.unshift({ id: Date.now().toString(), itemName: item.name, requestedQty: parseFloat(reqQty), date: dateStr });
-            saveData();
-            alert('تم ترحيل الطلب بنجاح!');
-        }
-
         function renderOrders() {
-            const c = document.getElementById('orders-list');
-            if (!c) return;
-            c.innerHTML = '';
+            const container = document.getElementById('orders-list');
+            if (!container) return;
+            container.innerHTML = '';
+
+            let activeOrdersMap = {};
+            orders.forEach(o => { activeOrdersMap[o.itemName] = o; });
+
+            let autoLowItems = items.filter(i => !i.hiddenFromOrders && Number(i.qty) <= calculateDualWindowReorderPoint(i.name));
+
+            autoLowItems.forEach(li => {
+                if (!activeOrdersMap[li.name]) {
+                    const suggestedQty = Math.max(10, (li.maxQty || 2000) - li.qty);
+                    const now = new Date();
+                    const dateStr = now.toLocaleDateString('ar-EG') + ' ' + now.toLocaleTimeString('ar-EG', {hour:'2-digit', minute:'2-digit'});
+                    
+                    const newOrder = {
+                        id: 'ord_' + Date.now() + '_' + Math.floor(Math.random() * 1000),
+                        itemName: li.name,
+                        requestedQty: suggestedQty,
+                        date: dateStr,
+                        status: 'NEW'
+                    };
+                    orders.push(newOrder);
+                    activeOrdersMap[li.name] = newOrder;
+                }
+            });
+
+            orders = orders.filter(o => {
+                if (o.status === 'SENT') return true;
+                const itemObj = items.find(i => i.name === o.itemName);
+                if (!itemObj) return false;
+                const dynamicMin = calculateDualWindowReorderPoint(itemObj.name);
+                return Number(itemObj.qty) <= dynamicMin || o.isManual === true;
+            });
+
             if (orders.length === 0) { 
-                c.innerHTML = '<div style="text-align:center; color:var(--text-muted); padding:20px;">لا توجد طلبات مسجلة</div>'; 
+                container.innerHTML = '<div style="text-align:center; color:var(--text-muted); padding:20px;">لا توجد طلبات مسجلة</div>'; 
                 calculateOrdersTruckLoad();
                 return; 
             }
-            orders.forEach(o => {
-                c.innerHTML += `
-                    <div class="item-card" style="background:#fff; padding:12px; border-radius:10px; border:1px solid var(--border-color); margin-bottom:10px; display:flex; justify-content:space-between; align-items:center; box-shadow: var(--shadow-subtle);">
-                        <div class="actions-group">
-                            <button class="btn-delete" onclick="deleteOrder('${o.id}')">حذف 🗑</button>
-                            <button class="btn-edit" onclick="editOrderQty('${o.id}')">تعديل الكراتين ✏</button>
+
+            const newOrders = orders.filter(o => !o.status || o.status === 'NEW');
+            const sentOrders = orders.filter(o => o.status === 'SENT');
+
+            let html = '';
+
+            // القسم الأول: النواقص الجديدة
+            html += `
+                <div style="margin-bottom: 20px; border: 2px solid #3b82f6; border-radius: 12px; padding: 14px; background: #eff6ff;">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+                        <h4 style="color:#1d4ed8; margin:0;">🚨 نواقص جديدة (جاهزة للتجهيز والشحن)</h4>
+                        <span style="background:#2563eb; color:#fff; padding:3px 8px; border-radius:6px; font-size:0.75rem; font-weight:bold;">${newOrders.length} أصناف</span>
+                    </div>
+            `;
+
+            if (newOrders.length === 0) {
+                html += `<div style="text-align:center; color:var(--text-muted); padding:10px; font-size:0.85rem;">لا توجد نواقص جديدة حالياً</div>`;
+            } else {
+                newOrders.forEach(o => {
+                    html += `
+                        <div class="item-card" style="background:#fff; padding:12px; border-radius:10px; border:1px solid #bfdbfe; margin-bottom:8px; display:flex; justify-content:space-between; align-items:center;">
+                            <div class="actions-group">
+                                <button class="btn-delete" onclick="deleteOrder('${o.id}')">حذف 🗑</button>
+                                <button class="btn-edit" onclick="editOrderQty('${o.id}')">تعديل الكراتين ✏</button>
+                                <button class="btn-order" onclick="markOrderAsSent('${o.id}')" style="background:#059669; color:#fff; border:none; padding:6px 12px; font-weight:bold;">طلب من المعمل 🚚</button>
+                            </div>
+                            <div style="text-align: center;">
+                                <span style="font-weight:900; color:#1d4ed8; font-size:1.1rem;">${o.requestedQty} كرتونة</span>
+                                <div style="font-size:0.72rem; color:var(--text-muted);">${o.date}</div>
+                            </div>
+                            <div style="text-align: right;"><b>${o.itemName}</b></div>
                         </div>
-                        <div style="text-align: center;">
-                            <span style="font-weight:900; color:var(--primary-accent); font-size:1.1rem;">${o.requestedQty}</span>
-                            <div style="font-size:0.72rem; color:var(--text-muted);">${o.date}</div>
+                    `;
+                });
+            }
+            html += `</div>`;
+
+            // القسم الثاني: الطلبيات المعلقة (تم طلبها وبانتظار الاستلام)
+            html += `
+                <div style="border: 2px solid #f59e0b; border-radius: 12px; padding: 14px; background: #fffbeb;">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+                        <h4 style="color:#b45309; margin:0;">⏳ طلبيات تم إرسالها للمعمل (في انتظار الاستلام)</h4>
+                        <span style="background:#d97706; color:#fff; padding:3px 8px; border-radius:6px; font-weight:700;">${sentOrders.length} أصناف</span>
+                    </div>
+            `;
+
+            if (sentOrders.length === 0) {
+                html += `<div style="text-align:center; color:var(--text-muted); padding:10px; font-size:0.85rem;">لا توجد طلبيات معلقة قيد الانتظار</div>`;
+            } else {
+                sentOrders.forEach(o => {
+                    html += `
+                        <div class="item-card" style="background:#fff; padding:12px; border-radius:10px; border:1px solid #fcd34d; margin-bottom:8px; display:flex; justify-content:space-between; align-items:center;">
+                            <div class="actions-group">
+                                <button class="btn-delete" onclick="deleteOrder('${o.id}')">إلغاء الطلب 🗑</button>
+                                <button class="btn-primary" onclick="confirmOrderReceipt('${o.id}')" style="background:#059669; font-size:0.78rem; padding:6px 12px;">تم الاستلام بالمستودع 📥</button>
+                            </div>
+                            <div style="text-align: center;">
+                                <span style="font-weight:900; color:#b45309; font-size:1.1rem;">${o.requestedQty} كرتونة</span>
+                                <div style="font-size:0.72rem; color:#b45309;">تم الطلب ⏳</div>
+                            </div>
+                            <div style="text-align: right;"><b>${o.itemName}</b></div>
                         </div>
-                        <div style="text-align: right;"><b>${o.itemName}</b></div>
-                    </div>`;
-            });
+                    `;
+                });
+            }
+            html += `</div>`;
+
+            container.innerHTML = html;
             calculateOrdersTruckLoad();
+        }
+
+        function markOrderAsSent(orderId) {
+            const order = orders.find(o => String(o.id) === String(orderId));
+            if (order) {
+                order.status = 'SENT';
+                saveData();
+            } else {
+                const target = orders.find(o => o.id === orderId || o.itemName === orderId);
+                if(target) {
+                    target.status = 'SENT';
+                    saveData();
+                }
+            }
+        }
+
+        function confirmOrderReceipt(orderId) {
+            const order = orders.find(o => String(o.id) === String(orderId));
+            if (!order) return;
+
+            if (confirm(`هل تم استلام شحنة (${order.itemName}) بعدد (${order.requestedQty} كرتونة) بالفعل في المستودع؟`)) {
+                const item = items.find(i => i.name === order.itemName);
+                if (item) {
+                    item.qty += order.requestedQty;
+                }
+                orders = orders.filter(o => String(o.id) !== String(orderId));
+                saveData();
+                alert(`✅ تم إدخال الكمية للجرد وإزالة الصنف من قائمة الطلبات المعلقة!`);
+            }
         }
 
         function buildPDFContent() {
@@ -3582,7 +3996,7 @@
         function previewPDF() { if(orders.length===0){alert('لا توجد طلبات!');return;} buildPDFContent(); document.getElementById('preview-modal').style.display='flex'; }
         function closeModal() { document.getElementById('preview-modal').style.display='none'; }
         function exportOrdersToPDF() { buildPDFContent(); html2pdf().from(document.getElementById('pdf-template')).save(`طلبات_${new Date().toISOString().slice(0,10)}.pdf`).then(closeModal); }
-        function deleteOrder(id) { orders = orders.filter(o => o.id !== id); saveData(); }
+        function deleteOrder(id) { orders = orders.filter(o => String(o.id) !== String(id)); saveData(); }
         function clearOrders() { if(confirm('هل أنت متأكد من مسح الطلبات؟')){ orders = []; saveData(); } }
 
         function editItemDetails(id) {
@@ -3735,6 +4149,317 @@
                 alert('❌ تعذر تحليل النص لعدم اكتمال بنية الـ JSON.');
             }
         }
+        
+        // ضع مفتاح الـ API الخاص بك هنا
+const GEMINI_API_KEY = "AIzaSyDnj_ebu8vu0bFYtYvt0yPRFpVAItgPSL0";
+
+
+function toggleAiChat() {
+    const win = document.getElementById('ai-chat-window');
+    win.style.display = (win.style.display === 'none') ? 'flex' : 'none';
+}
+
+function sendAiMessage() {
+    const input = document.getElementById('ai-chat-input');
+    const question = input.value.trim();
+    if (!question) return;
+    
+    addMessageToChat(question, 'user');
+    input.value = '';
+    
+    const loadingId = addMessageToChat("🤖 جاري تحليل البيانات والإجابة...", 'assistant');
+    
+    const dataForAi = {
+        items: items.map(i => ({ name: i.name, qty: i.qty })),
+        invoices: invoices.map(inv => ({ type: inv.type, isoDate: inv.isoDate, items: inv.items })),
+        customers: customers.map(c => ({ name: c.name }))
+    };
+
+    callGeminiApi(question, dataForAi)
+        .then(answer => {
+            removeMessageFromChat(loadingId);
+            addMessageToChat(answer, 'assistant');
+        })
+    .catch(err => {
+        removeMessageFromChat(loadingId);
+        console.error("تفاصيل الخطأ الكاملة:", err);
+        addMessageToChat("❌ خطأ: " + (err.message || "حدث خطأ في الاتصال"), 'assistant');
+    });
+
+}
+
+function addMessageToChat(text, sender) {
+    const container = document.getElementById('ai-chat-messages');
+    const div = document.createElement('div');
+    const id = Date.now().toString();
+    div.className = `ai-message ${sender}`;
+    div.innerHTML = text;
+    div.id = id;
+    container.appendChild(div);
+    container.scrollTop = container.scrollHeight;
+    return id;
+}
+
+function removeMessageFromChat(id) {
+    const el = document.getElementById(id);
+    if (el) el.remove();
+}
+
+async function callGeminiApi(question, data) {
+    const prompt = `أنت مساعد ذكي لمستودع كراتين وتغليف (Kanawati Pack). بيانات المستودع الحالية:\n${JSON.stringify(data)}\n\nسؤال المستخدم حسين: ${question}`;
+    
+    // استخدام نموذج gemini-1.5-flash المعتمد
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`;
+
+    
+    const res = await fetch(url, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+            contents: [{
+                parts: [{ text: prompt }]
+            }]
+        })
+    });
+
+    const json = await res.json();
+    
+    if (res.ok && json.candidates && json.candidates[0].content) {
+        return json.candidates[0].content.parts[0].text;
+    } else {
+        console.error("Gemini Error:", json);
+        throw new Error(json.error?.message || "API Error");
+    }
+}
+
+
     </script>
+<!-- عناصر المساعد الذكي -->
+<button id="ai-chat-toggle" class="ai-chat-toggle" onclick="toggleAiChat()">
+    💬 المساعد الذكي
+</button>
+
+<div id="ai-chat-window" class="ai-chat-window" style="display: none;">
+    <div class="ai-chat-header">
+        <h3 style="margin:0; font-size:1rem;">🤖 المحلل والمسؤول الذكي</h3>
+        <button class="ai-chat-close" onclick="toggleAiChat()">✕</button>
+    </div>
+    
+    <div id="ai-chat-messages" class="ai-chat-messages">
+        <div class="ai-message assistant">
+            أهلاً بك يا حسين! أنا مساعدك الذكي. اسألني أي شيء عن المستودع والحركات!
+        </div>
+    </div>
+    
+    <div class="ai-chat-input-container">
+        <input type="text" id="ai-chat-input" class="ai-chat-input" placeholder="اكتب سؤالك هنا..." onkeydown="if(event.key==='Enter') sendAiMessage()">
+        <button id="ai-chat-send" class="ai-chat-send" onclick="sendAiMessage()">إرسال</button>
+    </div>
+</div>
+
 </body>
 </html>
+<script>
+const GEMINI_API_KEY = "AIzaSyDnj_ebu8vu0bFYtYvt0yPRFpVAItgPSL0"; 
+
+function toggleAiChat() {
+    try {
+        const win = document.getElementById('ai-chat-window');
+        if (win) {
+            win.style.display = (win.style.display === 'none') ? 'flex' : 'none';
+        }
+    } catch(e) { console.error(e); }
+}
+
+function sendAiMessage() {
+    try {
+        const input = document.getElementById('ai-chat-input');
+        if (!input) return;
+        const question = input.value.trim();
+        if (!question) return;
+        
+        addMessageToChat(question, 'user');
+        input.value = '';
+        
+        const loadingId = addMessageToChat("🤖 جاري تحليل البيانات والإجابة...", 'assistant');
+        
+        let safeItems = [];
+        let safeInvoices = [];
+        let safeCustomers = [];
+        
+        try { if (typeof items !== 'undefined' && Array.isArray(items)) safeItems = items.map(i => ({ name: i.name || '', qty: i.qty || 0 })); } catch(e){}
+        try { if (typeof invoices !== 'undefined' && Array.isArray(invoices)) safeInvoices = invoices.slice(0, 15).map(inv => ({ type: inv.type || '', date: inv.isoDate || '' })); } catch(e){}
+        try { if (typeof customers !== 'undefined' && Array.isArray(customers)) safeCustomers = customers.map(c => ({ name: c.name || '' })); } catch(e){}
+
+        const dataForAi = {
+            items: safeItems,
+            invoices: safeInvoices,
+            customers: safeCustomers
+        };
+
+        callGeminiApi(question, dataForAi)
+            .then(answer => {
+                removeMessageFromChat(loadingId);
+                addMessageToChat(answer, 'assistant');
+            })
+            .catch(err => {
+                removeMessageFromChat(loadingId);
+                addMessageToChat("❌ حدث خطأ في الاتصال بالسيرفر.", 'assistant');
+            });
+    } catch(err) {
+        console.error("AI Error:", err);
+    }
+}
+
+function addMessageToChat(text, sender) {
+    try {
+        const container = document.getElementById('ai-chat-messages');
+        if (!container) return '';
+        const div = document.createElement('div');
+        const id = 'msg_' + Date.now();
+        div.className = `ai-message ${sender}`;
+        div.innerHTML = text;
+        div.id = id;
+        container.appendChild(div);
+        container.scrollTop = container.scrollHeight;
+        return id;
+    } catch(e) { return ''; }
+}
+
+function removeMessageFromChat(id) {
+    try {
+        const el = document.getElementById(id);
+        if (el) el.remove();
+    } catch(e) {}
+}
+
+async function callGeminiApi(question, data) {
+    const prompt = `أنت مساعد ذكي لمستودع كراتين وتغليف (Kanawati Pack). ملخص البيانات:\n${JSON.stringify(data)}\n\nسؤال المستخدم حسين: ${question}`;
+    
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`;
+    
+    const res = await fetch(url, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+            contents: [{
+                parts: [{ text: prompt }]
+            }]
+        })
+    });
+
+    const json = await res.json();
+    
+    if (res.ok && json.candidates && json.candidates[0]?.content?.parts[0]?.text) {
+        return json.candidates[0].content.parts[0].text;
+    } else {
+        throw new Error("API Error");
+    }
+}
+</script>
+const GEMINI_API_KEY = "AIzaSyDnj_ebu8vu0bFYtYvt0yPRFpVAItgPSL0";
+
+function toggleAiChat() {
+    try {
+        const win = document.getElementById('ai-chat-window');
+        if (win) {
+            win.style.display = (win.style.display === 'none') ? 'flex' : 'none';
+        }
+    } catch(e) { console.error(e); }
+}
+
+function sendAiMessage() {
+    try {
+        const input = document.getElementById('ai-chat-input');
+        if (!input) return;
+        const question = input.value.trim();
+        if (!question) return;
+        
+        addMessageToChat(question, 'user');
+        input.value = '';
+        
+        const loadingId = addMessageToChat("🤖 جاري تحليل البيانات والإجابة...", 'assistant');
+        
+        let safeItems = [];
+        let safeInvoices = [];
+        let safeCustomers = [];
+        
+        try { if (typeof items !== 'undefined' && Array.isArray(items)) safeItems = items.map(i => ({ name: i.name || '', qty: i.qty || 0 })); } catch(e){}
+        try { if (typeof invoices !== 'undefined' && Array.isArray(invoices)) safeInvoices = invoices.slice(0, 15).map(inv => ({ type: inv.type || '', date: inv.isoDate || '' })); } catch(e){}
+        try { if (typeof customers !== 'undefined' && Array.isArray(customers)) safeCustomers = customers.map(c => ({ name: c.name || '' })); } catch(e){}
+
+        const dataForAi = {
+            items: safeItems,
+            invoices: safeInvoices,
+            customers: safeCustomers
+        };
+
+        callGeminiApi(question, dataForAi)
+            .then(answer => {
+                removeMessageFromChat(loadingId);
+                addMessageToChat(answer, 'assistant');
+            })
+            .catch(err => {
+                removeMessageFromChat(loadingId);
+                addMessageToChat("❌ حدث خطأ في الاتصال بالسيرفر.", 'assistant');
+            });
+    } catch(err) {
+        console.error("AI Error:", err);
+    }
+}
+
+function addMessageToChat(text, sender) {
+    try {
+        const container = document.getElementById('ai-chat-messages');
+        if (!container) return '';
+        const div = document.createElement('div');
+        const id = 'msg_' + Date.now();
+        div.className = `ai-message ${sender}`;
+        div.innerHTML = text;
+        div.id = id;
+        container.appendChild(div);
+        container.scrollTop = container.scrollHeight;
+        return id;
+    } catch(e) { return ''; }
+}
+
+function removeMessageFromChat(id) {
+    try {
+        const el = document.getElementById(id);
+        if (el) el.remove();
+    } catch(e) {}
+}
+
+async function callGeminiApi(question, data) {
+    const prompt = `أنت مساعد ذكي لمستودع كراتين وتغليف (Kanawati Pack). ملخص البيانات:\n${JSON.stringify(data)}\n\nسؤال المستخدم حسين: ${question}`;
+    
+    // إرسال الطلب عبر proxy لتجاوز الحظر المحلي (blocked / CORS)
+    const targetUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`;
+    const proxyUrl = `https://corsproxy.io/?` + encodeURIComponent(targetUrl);
+    
+    const res = await fetch(proxyUrl, {
+        method: "POST",
+        headers: { 
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            contents: [{
+                parts: [{ text: prompt }]
+            }]
+        })
+    });
+
+    if (!res.ok) {
+        const errText = await res.text();
+        console.error("API Error Details:", errText);
+        throw new Error("خطأ في الاتصال: " + res.status);
+    }
+
+    const json = await res.json();
+    
+    if (json.candidates && json.candidates[0]?.content?.parts[0]?.text) {
+        return json.candidates[0].content.parts[0].text;
+    } else {
+        throw new Error("لم يتم تلقي إجابة من المساعد.");
+    }
+}
